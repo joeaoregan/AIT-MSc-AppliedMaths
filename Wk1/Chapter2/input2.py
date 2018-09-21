@@ -4,8 +4,8 @@
 # Get input from the user
 
 print("What is your first name?")
-# firstName = input()
-firstName = raw_input()
+firstName = input()
+# firstName = raw_input()
 print("Hello, " + str(firstName) + "!")
 
 # scoreTotal = 0

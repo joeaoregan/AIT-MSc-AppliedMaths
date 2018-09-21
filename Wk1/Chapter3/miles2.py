@@ -17,7 +17,8 @@ while more.lower() == "y":
     mpg = round(milesDriven / gallonsUsed, 2)
     print("Miles Per Gallon:", mpg, "\n")
 
-    more = raw_input("Continue? (y/n): ")
+    # more = raw_input("Continue? (y/n): ")
+    more = input("Continue? (y/n): ")
     print
 
 print("Okay, bye!")

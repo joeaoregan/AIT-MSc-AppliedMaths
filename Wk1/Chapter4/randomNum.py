@@ -19,18 +19,18 @@ def main():
 
 def display_rules():
     print("Let's Play PIG!")
-    print
+    print()
     print("* See how many turns it takes you to get to 20.")
     print("* Turn ends when you hold or roll a 1.")
     print("* If you roll a 1, you lose all points for the turn.")
     print("* if you hold, you save all points for the turn.")
-    print
+    print()
 
 
 def play_game():
     while not gameOver:
         take_turn()
-    print
+    print()
     print("Game over!")
 
 
@@ -41,7 +41,8 @@ def take_turn():
     print("TURN" + str(turn))
     turnOver = False
     while not turnOver:
-        choice = raw_input("Roll or hold? (r/h): ")
+        # choice = raw_input("Roll or hold? (r/h): ")
+        choice = input("Roll or hold? (r/h): ")
         if choice == "r":
             roll_die()
         elif choice == "h":

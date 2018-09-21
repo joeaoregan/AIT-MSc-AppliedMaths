@@ -3,6 +3,7 @@
 # Lecture 2 Python Introduction S105
 # Function that uses local variables
 
+
 def calcTax(amount, taxRate):
     tax = amount * taxRate      # tax is a local variable
     return tax                  # return is necessary

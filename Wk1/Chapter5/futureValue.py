@@ -2,7 +2,7 @@
 
 def calculateFutureValue(monthlyInvestment, yearlyInterest, years):
     # convert yearly values to monthly values
-    monthlyInterestRate = yearlyInterest / 12.0 / 100.0
+    monthlyInterestRate = yearlyInterest / 12 / 100.0
     months = years * 12
 
     print("Monthly Interest Rate: " + str(monthlyInterestRate))
@@ -25,16 +25,18 @@ def main():
     monthlyInvestment = 0
 
     while monthlyInvestment <= 0 or monthlyInvestment > 1000:
-        # print("Enter monthly investment:\t")
-        monthlyInvestment = input("Enter monthly investment:\t")
+        #print("Enter monthly investment:\t")
+        #monthlyInvestment = input()
+        #monthlyInvestment = input("Enter monthly investment:\t")
+        monthlyInvestment = int(input("Enter monthly investment:\t"))   # need to cast input to integer
 
         if monthlyInvestment <= 0 or monthlyInvestment > 1000:
             print("Entry must be greater than 0 and less than or equal to 1000")
 
     # print("Enter yearly interest rate:\t")
-    yearlyInterest = input("Enter yearly interest rate:\t")
+    yearlyInterest = int(input("Enter yearly interest rate:\t"))
     # yearlyInterest = get_float("Enter Number: ", 0, 10)
-    numYears = input("Enter number of years:\t\t")
+    numYears = int(input("Enter number of years:\t\t"))
 
     #f utureAmount = calculateFutureValue(100,.05,5)
     futureAmount = calculateFutureValue(monthlyInvestment,yearlyInterest,numYears)
