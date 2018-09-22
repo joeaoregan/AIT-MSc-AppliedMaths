@@ -7,7 +7,17 @@ import AntiBody.bullet as bullet
 import background as bg, AntiBody.laser as laser, AntiBody.player as player, AntiBody.bloodcell as bloodcell
 import AntiBody.object as object
 
-print("Test")
+# print("Test")
+score = 0
+
+# font = pygame.font.SysFont("comicsansms", 24)
+fontName = pygame.font.match_font("comicsansms")
+def drawText(surface, text, size, x, y):
+    font = pygame.font.Font(fontName, 24)
+    text = font.render(text, True, (255, 255, 255))   # True = text anti-aliased
+    textRect = text.get_rect()
+    textRect.midtop = (x,y)
+    surface.blit(text, textRect)    # draw text surface at location of text rectangle
 
 
 def events():
@@ -37,23 +47,13 @@ bgImage = pygame.image.load("Art/background.png").convert()
 playerImage = pygame.image.load("Art/Player1Ship.png").convert()
 laserImage = pygame.image.load("Art/LaserGreen.png").convert()
 bloodcellImage = pygame.image.load("Art/BloodCell.png").convert()
-
-# objectImage = pygame.image.load("Art/Player1Ship.png").convert()
-player1 = player.Player(playerImage.get_rect().width, bgImage.get_rect().height / 2)
-bloodCell1 = bloodcell.BloodCell(500,360)
-
 orig_image = bloodcellImage
 
-# Audio
-# laserFX = pygame.mixer.Sound('Audio/laser1.wav')
-# explosionFX = pygame.mixer.Sound('Audio/explosion.wav')
-
-# player.x = playerImage.get_rect().width
-# player.y = bgImage.get_rect().height / 2
-# bloodcell.x = 500
-# bloodcell.y = 360
+player1 = player.Player(playerImage.get_rect().width, bgImage.get_rect().height / 2)
+# bloodCell1 = bloodcell.BloodCell(500,360)
 
 bulletList = pygame.sprite.Group()
+bloodCellList = pygame.sprite.Group()
 
 # nextFire = 0
 
@@ -66,17 +66,7 @@ def input():
     # player.input()
     player1.input()
 
-   # fire = pygame.time.get_ticks()
-
-#    if k[K_SPACE] and not laser.active:
-#        laser.active = True
-        # laser.x = player.x
-        # laser.y = player.y + (playerImage.get_rect().height / 2)   # Fire from center of ships height
-#        laser.x = player1.x
-#        laser.y = player1.y + (playerImage.get_rect().height / 2)
-#        laserFX.play()
     if k[K_SPACE] and pygame.time.get_ticks() > bullet.NEXT_FIRE:
-#        laser1 = laser.Laser(player1.x, player1.y + (playerImage.get_rect().height / 2))
         bullet1 = bullet.Bullet(player1.x, player1.y + (playerImage.get_rect().height / 2))
         bulletList.add(bullet1)
         bullet.NEXT_FIRE = pygame.time.get_ticks() + 200
@@ -91,8 +81,15 @@ def rotate(image, rect, angle):
     return new_image, rect
 
 
+def spawnBloodCells():
+    if len(bloodCellList) < 8:
+        # bloodCell1 = bloodcell.BloodCell(random.rand, 360)
+        bloodCell1 = bloodcell.BloodCell()
+        bloodCellList.add(bloodCell1)
+
+
 def move():
-    global bloodcellImage
+    global bloodcellImage, score
 
     # Scrolling Background
     rel_x = bg.x % bgImage.get_rect().width
@@ -101,47 +98,59 @@ def move():
         DS.blit(bgImage, (rel_x, 0))
     bg.move()
 
-    # Laser
-    # laser1.move()
-
-    #if laser.active:
-    #    DS.blit(laserImage, (laser.x, laser.y))
-    #if laser.explosion:
-    #    explosionFX.play()
-    #    laser.explosion = False
-    #    bloodCell1.x = 1280
-
-
-    # Player
-    # player.move()
-    # DS.blit(playerImage, (player.x, player.y))
-
-    # Object
-    player1.move()
-    DS.blit(playerImage, (player1.x, player1.y))
-
     # BloodCell
-    rect = bloodcellImage.get_rect(center=(bloodCell1.x,bloodCell1.y))
-    bloodCell1.move()
+    # rect = bloodcellImage.get_rect(center=(bloodCell1.x,bloodCell1.y))
+    # bloodCell1.move()
+    # bloodcellImage, rect = rotate(orig_image, rect, bloodCell1.angle)
+    # DS.blit(bloodcellImage, rect)
 
-    bloodcellImage, rect = rotate(orig_image, rect, bloodCell1.angle)
-    DS.blit(bloodcellImage, rect)
+    # Move and Draw Blood Cells
+    for bloodCells in bloodCellList:
+        bloodCells.move()
+        rect = bloodcellImage.get_rect(center=(bloodCells.x,bloodCells.y))
+        bloodcellImage, rect = rotate(orig_image, rect, bloodCells.angle)
+        DS.blit(bloodcellImage, rect)
+        if bloodCells.x < -bloodCells.width:
+            bloodCellList.remove(bloodCells)
 
+    # Move and Draw Bullets
     for bullets in bulletList:
         bullets.move()
         DS.blit(laserImage, (bullets.x, bullets.y))
-        bullets.collisions(rect)
-        if not bullets.active:
-            bulletList.remove(bullets)
+        #if bullets.collisions(rect):
+        #    score += 10
+        #if not bullets.active:
+        #    bulletList.remove(bullets)
 
-    # laser.collisions(rect)    # WORKS
-    # laser.collisions2(bloodcell.x, bloodcell.y, bloodcell.width, bloodcell.height)
+    # Collisions Bullets and BloodCells
+    for bloodCells in bloodCellList:
+        if bloodCells.x < -bloodCells.width or not bloodCells.active:
+            bloodCellList.remove(bloodCells)
+
+        for bullets in bulletList:
+            if not bullets.active:
+                bulletList.remove(bullets)
+            rect = bloodcellImage.get_rect(center=(bloodCells.x,bloodCells.y))
+
+            if bullets.collisions(rect):
+                score += 10
+                bloodCells.active=False
+
+    # Player
+    player1.move()
+    DS.blit(playerImage, (player1.x, player1.y))
+
+    # Text
+    # DS.blit(text, (width / 2 - text.get_width() // 2, 20 - text.get_height() // 2))
+    drawText(DS, "Score: " + str(score), 24, width / 2, 5)
+    drawText(DS, "Level: 1", 24, 50, 5)
 
 
 # Game loop
 while True:
     events()
     input()
+    spawnBloodCells()
     move()
 
     pygame.display.update()

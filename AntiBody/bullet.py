@@ -38,7 +38,9 @@ class Bullet(pygame.sprite.Sprite):
             self.explosion = True
             self.active = False
             explosionFX.play()
+            return True
             # del self
+        return False
 
     def move(self):
         # global active, x
