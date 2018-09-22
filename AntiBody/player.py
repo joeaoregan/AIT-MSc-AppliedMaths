@@ -1,43 +1,51 @@
 import pygame
 from pygame.locals import *
-
-x, y = 0, 0
-velocityX, velocityY = 0,0
+import AntiBody.object as object
 
 SPEED = 5
 
 
-def input():
-    global velocityX, velocityY
-    k = pygame.key.get_pressed()
-    if k[K_RIGHT]:
-        velocityX = 1
-    elif k[K_LEFT]:
-        velocityX = -1
-    else:
-        velocityX = 0
+class Player(object.Object):
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.velocityX = 0
+        self.velocityY = 0
 
-    if k[K_UP]:
-        velocityY = -1
-    elif k[K_DOWN]:
-        velocityY = 1
-    else:
-        velocityY = 0
+# x, y = 0, 0
+# velocityX, velocityY = 0,0
 
+# SPEED = 5
 
+    def input(self):
+        # global velocityX, velocityY
+        k = pygame.key.get_pressed()
+        if k[K_RIGHT]:
+            self.velocityX = 1
+        elif k[K_LEFT]:
+            self.velocityX = -1
+        else:
+            self.velocityX = 0
 
-def move():
-    global x, y, SPEED
-    x += velocityX * SPEED
-    y += velocityY * SPEED
+        if k[K_UP]:
+            self.velocityY = -1
+        elif k[K_DOWN]:
+            self.velocityY = 1
+        else:
+            self.velocityY = 0
 
-    # Keep player in window boundary
-    if y < 20:
-        y = 20
-    elif y > 550:
-        y = 550
+    def move(self):
+        # global x, y, SPEED
+        self.x += self.velocityX * SPEED
+        self.y += self.velocityY * SPEED
 
-    if x < 0:
-        x = 0
-    elif x > 1180:
-        x = 1180
+        # Keep player in window boundary
+        if self.y < 20:
+            self.y = 20
+        elif self.y > 550:
+            self.y = 550
+
+        if self.x < 0:
+            self.x = 0
+        elif self.x > 1180:
+            self.x = 1180

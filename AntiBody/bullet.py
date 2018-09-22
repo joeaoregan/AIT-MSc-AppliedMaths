@@ -3,9 +3,22 @@ from pygame.locals import *
 import background
 import AntiBody.object as object
 
+BLACK = (0, 0, 0)
+NEXT_FIRE = 0
 
-class Laser(object.Object):
+pygame.init()
+laserFX = pygame.mixer.Sound('Audio/laser1.wav')
+explosionFX = pygame.mixer.Sound('Audio/explosion.wav')
+
+
+class Bullet(pygame.sprite.Sprite):
+    def __del__(self):
+        # super().__del__()
+        print("Bullet destroyed")
+
     def __init__(self, x, y):
+        super().__init__()
+
         self.x = x
         self.y = y
         self.velocityX = 0
@@ -15,11 +28,17 @@ class Laser(object.Object):
         self.active = True
         self.explosion = False
 
+        self.image = pygame.Surface([4,10])
+        self.image.fill(BLACK)
+        laserFX.play()
+
     def collisions(self, rect):
         # global explosion, active
         if self.x < rect.left + rect.width and self.x + self.width > rect.left and self.y < rect.top + rect.height and self.y + self.height > rect.top:
             self.explosion = True
             self.active = False
+            explosionFX.play()
+            # del self
 
     def move(self):
         # global active, x
@@ -31,14 +50,3 @@ class Laser(object.Object):
 
         if not self.active:
             self.x,self.y=0,0
-
-# x, y = 0,0
-# width, height = 100, 47
-# active = False
-# explosion = False
-
-# def collisions2(objectX,objectY,objectW,objectH):
-#     global explosion, active
-#     if x < objectX + objectW and x + width > objectX and y < objectY + objectH and y + height > objectY:
-#         explosion = True
-#         active = False
