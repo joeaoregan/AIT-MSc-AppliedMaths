@@ -1,6 +1,6 @@
-# AntibodyPy
-## Python version of Antibody C++ game using pygame
+# MSc in Applied Software Engineering
+## Applied Maths
 ### Joe O'Regan
 ### A00258304
 
-Antibody game ported to python from C++
+Weekly python labs and assignments for Applied Maths module
