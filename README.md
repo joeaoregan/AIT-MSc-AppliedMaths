@@ -1,6 +1,6 @@
-# MSc in Applied Software Engineering
-## Applied Maths
+# AntibodyPy
+## Python version of Antibody C++ game using pygame
 ### Joe O'Regan
 ### A00258304
 
-Weekly python labs and assignments for Applied Maths module
+Antibody game ported to python from C++
