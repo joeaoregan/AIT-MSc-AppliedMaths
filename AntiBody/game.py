@@ -36,6 +36,7 @@ orig_image = bloodcellImage
 
 # Audio
 laserFX = pygame.mixer.Sound('Audio/laser1.wav')
+explosionFX = pygame.mixer.Sound('Audio/explosion.wav')
 
 player.x = playerImage.get_rect().width
 player.y = bgImage.get_rect().height / 2
@@ -79,6 +80,10 @@ def move():
     laser.move()
     if laser.active:
         DS.blit(laserImage, (laser.x, laser.y))
+    if laser.explosion:
+        explosionFX.play()
+        laser.explosion = False
+        bloodcell.x = 1280
 
     # Player
     player.move()
@@ -87,14 +92,12 @@ def move():
     # BloodCell
     rect = bloodcellImage.get_rect(center=(bloodcell.x,bloodcell.y))
     bloodcell.move()
-    # pygame.transform.rotate(bloodcellImage, bloodcell.angle)
-    # pygame.transform.rotate(bloodcellImage, 45)
-    # rot_center(bloodcellImage, 20)
-
-    # bloodcellImage.rotate(10).show()
 
     bloodcellImage, rect = rotate(orig_image, rect, bloodcell.angle)
     DS.blit(bloodcellImage, rect)
+
+    laser.collisions(rect)
+    # laser.collisions2(bloodcell.x, bloodcell.y, bloodcell.width, bloodcell.height)
 
 
 # Game loop
