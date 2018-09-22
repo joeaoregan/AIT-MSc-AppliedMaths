@@ -3,7 +3,8 @@ from pygame.locals import *
 import sys
 import os
 
-import background as bg, laser, player
+import background as bg, laser, player, bloodcell
+
 
 def events():
     for event in pygame.event.get():
@@ -27,12 +28,19 @@ FPS = 120
 BLACK = (0,0,0,255)
 
 # Sprites & Images
-bgImage = pygame.image.load("background.png").convert()
-playerImage = pygame.image.load("Player1Ship.png").convert()
-laserImage = pygame.image.load("LaserGreen.png").convert()
+bgImage = pygame.image.load("Art/background.png").convert()
+playerImage = pygame.image.load("Art/Player1Ship.png").convert()
+laserImage = pygame.image.load("Art/LaserGreen.png").convert()
+bloodcellImage = pygame.image.load("Art/BloodCell.png").convert()
+orig_image = bloodcellImage
+
+# Audio
+laserFX = pygame.mixer.Sound('Audio/laser1.wav')
 
 player.x = playerImage.get_rect().width
 player.y = bgImage.get_rect().height / 2
+bloodcell.x = 500
+bloodcell.y = 360
 
 
 def input():
@@ -45,9 +53,21 @@ def input():
         laser.active = True
         laser.x = player.x
         laser.y = player.y + (playerImage.get_rect().height / 2)   # Fire from center of ships height
+        laserFX.play()
+
+
+def rotate(image, rect, angle):
+    """Rotate the image while keeping its center."""
+    # Rotate the original image without modifying it.
+    new_image = pygame.transform.rotate(image, angle)
+    # Get a new rect with the center of the old rect.
+    rect = new_image.get_rect(center=rect.center)
+    return new_image, rect
 
 
 def move():
+    global bloodcellImage
+
     # Scrolling Background
     rel_x = bg.x % bgImage.get_rect().width
     DS.blit(bgImage, (rel_x - bgImage.get_rect().width, 0))
@@ -63,6 +83,18 @@ def move():
     # Player
     player.move()
     DS.blit(playerImage, (player.x, player.y))
+
+    # BloodCell
+    rect = bloodcellImage.get_rect(center=(bloodcell.x,bloodcell.y))
+    bloodcell.move()
+    # pygame.transform.rotate(bloodcellImage, bloodcell.angle)
+    # pygame.transform.rotate(bloodcellImage, 45)
+    # rot_center(bloodcellImage, 20)
+
+    # bloodcellImage.rotate(10).show()
+
+    bloodcellImage, rect = rotate(orig_image, rect, bloodcell.angle)
+    DS.blit(bloodcellImage, rect)
 
 
 # Game loop
