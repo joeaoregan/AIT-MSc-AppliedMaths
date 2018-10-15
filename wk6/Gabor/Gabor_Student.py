@@ -50,9 +50,33 @@ class D2GaborWavelet(object):
             Use the code provided along with your notes, published papers and
             references available on the internet to code the Gabor equation to
             generate a 2D Gabor wavelet.  The data to construct the wavelet must
-            be stroed in the GaborGrid 2D array
+            be stored in the GaborGrid 2D array
         :return:
         """
+        x,y = 0,0
+        gx,gy = -self.gaussian, -self.gaussian
+        count, total = 0, 0
+        ax, dy = 0,0
+        x, y = -self.gaussian, -self.gaussian
+
+        for y in range(-int(self.gaussian), (int(self.gaussian) + 1), 1):
+            for x in range(-int(self.gaussian), (int(self.gaussian)+1), 1):
+                X = gx * math.cos(self.theta) + gy * math.sin(self.theta)
+                Y = -gx * math.sin(self.theta) + gy * math.cos(self.theta)
+                self.GaborGrid[dy][ax] = (math.exp(-(math.pow(X,2)+(math.pow(Y,2)*math.pow(self.upsi, 2))) / (2*math.pow(self.sigma, 2)))) * (math.cos((self.kappa * X + self.varphi)))
+                total += self.GaborGrid[dy][ax]
+                count += 1
+                gx += 1
+                ax+= 1
+            ax = 0
+            dy += 1
+            gy += 1
+            gx = -self.gaussian
+        sean = total / count
+        print("Wavelet Generated")
+        print("Total %s Count %s Mean %s" % (total, count,sean))
+        print("-------------------------------------------")
+        print(self.GaborGrid)
 
     def GetNormGaborWavelet(self):
         """
@@ -61,6 +85,13 @@ class D2GaborWavelet(object):
             in the GaborNorGrid 2darray
         :return: GaborNormGrid
         """
+        min = self.GaborGrid.min()
+        max = self.GaborGrid.max()
+
+        for y in range(0, self.size, 1):
+            for x in range(0, self.size, 1):
+                temp = int((self.GaborGrid[y][x] - min) / (max - min) * 255)
+                self.GaborNormGrid[y][x] = temp
         return self.GaborNormGrid
 
     def ShowGrayScaleWavelet(self):
