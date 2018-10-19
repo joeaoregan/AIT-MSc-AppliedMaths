@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class IntImage(object):
     def __init__(self, w, h, imageData):
         self.width = w
@@ -24,6 +25,7 @@ class IntImage(object):
         c = self.IImage[x+w][y]
         sum = d + a - b - c
         print(sum)
+
 
 def main():
     image = np.random.randint(255, size=(8, 8))
