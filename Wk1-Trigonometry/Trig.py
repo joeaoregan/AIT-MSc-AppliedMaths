@@ -1,7 +1,7 @@
 '''
 Joe O'Regan
 A00258304
-Wk1 Assignment
+Wk1-Trigonometry Assignment
 Part 1: Trig 2
 '''
 

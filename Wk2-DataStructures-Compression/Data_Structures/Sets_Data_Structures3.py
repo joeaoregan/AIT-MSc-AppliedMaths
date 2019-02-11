@@ -4,7 +4,7 @@
 info = """This is a simple Python Script that demonstrates
 sets and how they are used
 ===============================================
-Superheros in the DC universe: """
+Superheroes in the DC universe: """
 
 print (info)
 DC = {'Superman', 'Batman', "Flash", 'Wonder Woman'}

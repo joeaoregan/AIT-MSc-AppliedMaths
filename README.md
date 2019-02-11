@@ -5,7 +5,9 @@
 
 Weekly python labs and assignments for Applied Maths module
 * Trigonometry
-* Compression
+* Data Structures & Compression
 * Haar
 * Huffman
 * Integral Image
+* Gabor
+* Fourier Series

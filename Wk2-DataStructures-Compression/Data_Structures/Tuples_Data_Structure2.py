@@ -3,7 +3,7 @@
 
 months = ('January', 'February', 'March', 'April', 'May', 'June',
           'July', 'August', 'September', 'October', 'November', 'December')
-print ("The months of the year inlcude:")
+print ("The months of the year include:")
 for month in months:
     print (month)
 
