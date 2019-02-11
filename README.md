@@ -3,4 +3,9 @@
 ### Joe O'Regan
 ### A00258304
 
-Applied Maths: Haar
+Weekly python labs and assignments for Applied Maths module
+* Trigonometry
+* Compression
+* Haar
+* Huffman
+* Integral Image
