@@ -2,4 +2,4 @@
 /venv/
 /wk6/__pycache__/
 *.pyc
-*.png
+!*.png
